@@ -9,7 +9,7 @@ const Featured = () => {
     <div className=" md:px-0 overflow-hidden">
       <div className="w-full h-full relative">
         <div className="absolute top-0 w-full h-full">
-            <Image src="/pic-2.jpg"  className="absolute md:-right-[10rem] top-0 z-[-999] object-cover " width={1000} height={1000} />
+            <Image alt="" src="/pic-2.jpg"  className="absolute md:-right-[10rem] top-0 z-[-999] object-cover " width={1000} height={1000} />
             <div className="cloud"></div>
         </div>
       <div className="py-32 max-w-[600px] mx-auto w-full overflow-hidden flex flex-col justify-center leading-7 items-center gap-3 two alt-two px-5">
