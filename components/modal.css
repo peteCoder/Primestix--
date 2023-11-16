@@ -5,20 +5,26 @@
     position: fixed;
     display: flex;
     justify-content: center;
-    align-items: center;
   }
   
   .modalContainer {
-    width: 500px;
-    height: 500px;
+    /* width: 500px;
+    height: 500px; */
     /* border-radius: 12px; */
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     display: flex;
     flex-direction: column;
-    padding: 25px;
+    padding: 15px;
   }
-  
+  .box {
+    background: 
+    url("../public/pic-3.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  }
+
   .modalContainer .title {
     display: inline-block;
     text-align: center;
