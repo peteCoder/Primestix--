@@ -15,7 +15,7 @@ export const Accordion = ({ section, key }) => {
   const { isOpen, toggle } = useOpenController(false);
   // console.log(section);
   return (
-    <div className="accordion-container">
+    <div className="accordion-container font-raleway">
       <ExpendableColumn
         question={section.question}
         isOpen={isOpen}
@@ -198,6 +198,68 @@ const ProjectDetailClient = () => {
             {/* accordion */}
             <MainAccordion data={project?.faqs} />
           </div>
+          
+
+          <div>
+            <div className="max-w-[1100px] mx-auto w-full mb-10">
+            <div className="">
+        <div className="max-w-screen-xl px-8 flex flex-col py-10 mx-auto text-gray-900 rounded-lg">
+          <div className="flex flex-col justify-center items-center px-10">
+            <div>
+              <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+                Lets talk about everything!
+              </h2>
+            </div>
+            <div className="mt-8 text-center"></div>
+          </div>
+          <div className="">
+            <div>
+              <span className="uppercase text-sm text-gray-600 font-bold">
+                Full Name
+              </span>
+              <input
+                className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                type="text"
+                placeholder=""
+              />
+            </div>
+            <div className="mt-8">
+              <span className="uppercase text-sm text-gray-600 font-bold">
+                Email
+              </span>
+              <input
+                className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                type="text"
+              />
+            </div>
+
+            <div className="mt-8">
+              <span className="uppercase text-sm text-gray-600 font-bold">
+                phone nummber
+              </span>
+              <input
+                className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                type="tel"
+              />
+            </div>
+
+            <div className="mt-8">
+              <span className="uppercase text-sm text-gray-600 font-bold">
+                Message
+              </span>
+              <textarea className="w-full h-24 bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"></textarea>
+            </div>
+            <div className="mt-8">
+              <button className="uppercase text-sm font-bold tracking-wide bg-[#A18830] text-gray-100 p-3 rounded-lg w-full focus:outline-none focus:shadow-outline">
+                Send Message
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+          </div>
+          </div>
+          
         </div>
       )}
     </main>
@@ -211,6 +273,7 @@ const MainAccordion = ({ data }) => {
         <h3 className="text-4xl capitalize font-bold py-10">
           Frequently asked questions
         </h3>
+        <h3 className="text-4xl capitalize font-raleway font-bold py-10">Frequently asked questions</h3>
         <div className="main-title-underline"></div>
         {data?.map((section, index) => (
           <Accordion key={index} section={section} />

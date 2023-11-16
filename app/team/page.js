@@ -8,7 +8,7 @@ const page = () => {
     <div className='flex flex-col font-raleway max-w-[1100px] w-full mx-auto px-5 md:px-0 py-20'>
         <div className='text-white'>
           <h1 className='text-4xl font-semibold'>Meet Our Team</h1>
-          {/* <p className='capitalize text-2xl italic'>Founder's message</p> */}
+          <p className='capitalize text-2xl italic'>Meet the diverse talents and expertise that form the heart of our team</p>
         </div>
       </div>
 
