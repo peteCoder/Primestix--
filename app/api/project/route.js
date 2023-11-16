@@ -17,6 +17,7 @@ export async function GET(req) {
     const country = searchParams.get("country");
     const projectType = searchParams.get("project_type");
     const orderOfItems = searchParams.get("orderOfItems");
+    const selectedCity = searchParams.get("city");
 
     // This is the complex sanity query that fetches an array of objects
     // based on some provided search parameters.
@@ -30,17 +31,18 @@ export async function GET(req) {
       (name match $searchTerm || 
       description match $searchTerm || 
       location match $searchTerm)${
-        country ? ` && country match $country` : ""
-      }${
-      projectType ? ` && projectType match $projectType` : ""
+        country ? ` && country->name match $country` : ""
+      }${projectType ? ` && projectType match $projectType` : ""}${
+      selectedCity ? ` && city->name match $selectedCity` : ""
     }] | order(${orderOfItems})  {
       _id,
       name,
+      city->{name},
       price,
       description,
       location,
       projectType,
-      country,
+      country->{name},
       long,
       lat,
       faqs[]{question, answer},
@@ -56,6 +58,7 @@ export async function GET(req) {
       searchTerm: `${searchTerm}*`,
       country: `${country}*`,
       projectType: `${projectType}*`,
+      selectedCity: `${selectedCity}*`,
     });
 
     return NextResponse.json(projects, { status: 200 });

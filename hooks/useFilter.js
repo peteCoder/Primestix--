@@ -9,6 +9,7 @@ export const useFilter = create((set, get) => ({
     country: "",
     project_type: "",
     orderOfItems: "createdAt asc",
+    city: ""
   },
   addSearch: (search) => {
     const prev = get().searchData;
@@ -19,6 +20,11 @@ export const useFilter = create((set, get) => ({
     const prev = get().searchData;
 
     set({ searchData: { ...prev, ...country } });
+  },
+  addCity: (city) => {
+    const prev = get().searchData;
+
+    set({ searchData: { ...prev, ...city } });
   },
 
   addProjectType: (project_type) => {

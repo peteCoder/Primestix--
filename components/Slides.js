@@ -16,6 +16,7 @@ import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
 import Image from "next/image";
 import Recents from "./Recents";
 import { getLatestFeatured } from "@/actions/getLatestFeatured";
+import { formatLocation } from "@/lib/helpers";
 
 export default function Slider() {
   const progressCircle = useRef(null);
@@ -30,6 +31,7 @@ export default function Slider() {
   useEffect(() => {
     const getFeaturedData = async () => {
       const data = await getLatestFeatured();
+      // console.log(data)
       setFeatures(data);
     };
 
@@ -117,7 +119,7 @@ export default function Slider() {
                             </svg>
                           </span>
                           <span>
-                            {feature?.city}, {feature?.country}
+                            {formatLocation(feature?.city?.name, feature?.country?.name)}
                           </span>
                         </span>
                       </div>
@@ -158,7 +160,7 @@ export default function Slider() {
             </div>
           </Swiper>
 
-          <Recents />
+          <Recents data={features[0]} />
         </div>
       )}
     </>

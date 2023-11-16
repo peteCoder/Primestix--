@@ -4,6 +4,7 @@ import "remixicon/fonts/remixicon.css";
 import Navigation from "@/components/Navigation";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
+import ToastProvider from "@/components/ToastProvider";
 
 export const metadata = {
   title: "Create Next App",
@@ -38,6 +39,7 @@ export default function RootLayout({ children }) {
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
         ></script>
       </head>
+      <ToastProvider />
       <body className="overflow-x-hidden">
         <div className="fixed top-0 w-full bg-white z-[9999] shadow-lg">
           <FullScreenNavbar />
@@ -46,7 +48,6 @@ export default function RootLayout({ children }) {
         <div>
           <Navigation />
         </div>
-        
       </body>
     </html>
   );

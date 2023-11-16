@@ -28,13 +28,16 @@ const Project = ({ data }) => {
             {data?.name}
           </h3>
           <h4 className="text-[#4a4a4a] text-[12px] h-[25px] mt-[10px] font-bold">
-            {data.location}
+            {data?.location}
           </h4>
 
-          <div><b>N </b>{data.price}</div>
+          <div>
+            <b>N </b>
+            {data?.price}
+          </div>
 
           <p className="text-[#4a4a4a] text-[12px] font-bold h-[46px] mb-[1px] ">
-            {data.description}
+            {data?.description}
           </p>
           <div className=" bg-[#cfba82] h-[1px] w-full mt-5" />
           <div className="h-[50px] flex items-center justify-between">

@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 import { useFilter } from "@/hooks/useFilter";
+import { getAllCities } from "@/actions/getAllCities.";
+import { getAllCountries } from "@/actions/getCountries";
 
 // Here is where all the client filtering logic happens!
 // I don't think you'll have to bother much about this component, but feel free!
@@ -14,11 +16,15 @@ import { useFilter } from "@/hooks/useFilter";
 const Filter = () => {
   const filter = useFilter();
 
+  const [cities, setCities] = useState([]);
+  const [countries, setCountries] = useState([]);
+
   // local state variables
   // because of the button that updates the UI
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
   const [project_type, setProjectType] = useState("");
+  const [city, setCity] = useState("");
 
   const [collapsedSelectOptions, setCollapsedSelectOptions] = useState(false);
 
@@ -31,6 +37,10 @@ const Filter = () => {
   };
   const handleCountries = (e) => {
     setCountry(e.target.value);
+  };
+
+  const handleCity = (e) => {
+    setCity(e.target.value);
   };
 
   const handleRemoveAllFilter = (e) => {
@@ -46,7 +56,23 @@ const Filter = () => {
     filter.addSearch({ search });
     filter.addProjectType({ project_type });
     filter.addCountry({ country });
+    filter.addCity({ city });
   };
+
+  console.log(city);
+
+  useEffect(() => {
+    const fetchAllCitiesAndCountries = async () => {
+      const cityData = await getAllCities();
+      const countryData = await getAllCountries();
+
+      setCities(cityData);
+      setCountries(countryData);
+    };
+    fetchAllCitiesAndCountries();
+  }, []);
+
+  console.log(country);
 
   return (
     <div>
@@ -110,19 +136,23 @@ const Filter = () => {
               </select>
               <select className="all-select" onChange={handleCountries}>
                 <option value={""}>All counties</option>
-                <option value={"jordan"}>Jordan</option>
-                <option value={"qatar"}>Qatar</option>
-                <option value={"saudi_arabia"}>Saudi Arabia</option>
-                <option value={"uae"}>United Arab Emirates</option>
+                {countries?.map((country) => (
+                  <option key={country._id} value={country?.name}>
+                    {country?.name}
+                  </option>
+                ))}
               </select>
               <select
                 className="all-select disabled:opacity-50"
-                disabled={true}
+                // disabled={true}
+                onChange={handleCity}
               >
-                <option value={""}>All countries</option>
-                <option value={"dubai"}>Dubai</option>
-                <option value={"kuwait"}>Kuwait</option>
-                <option value={"turkey"}>Turkey</option>
+                <option value={""}>All cities</option>
+                {cities?.map((city) => (
+                  <option key={city?._id} value={city?.name}>
+                    {city?.name}
+                  </option>
+                ))}
               </select>
               <select
                 className="all-select disabled:opacity-50"
@@ -134,9 +164,11 @@ const Filter = () => {
                 <option value={"turkey"}>Turkey</option>
               </select>
             </div>
-            <div className="cursor-pointer" onClick={() => setCollapsedSelectOptions(prev => !prev)}>
+            <div
+              className="cursor-pointer"
+              onClick={() => setCollapsedSelectOptions((prev) => !prev)}
+            >
               {/* Collapse filter select components */}
-             
             </div>
           </div>
 

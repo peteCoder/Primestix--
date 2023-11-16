@@ -1,11 +1,35 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Modal from "./Modal";
+import { getAllCommunities } from "@/actions/getAllCommunities";
+import { getAllProjects } from "@/actions/getAllProjects";
 
 // mobile view
 function MobileView({ open, setOpen }) {
+
+  const [communities, setCommunities] = useState([]);
+  const [projects, setProjects] = useState([]);
+  useEffect(() => {
+    const fetchCommunities = async () => {
+      let data = await getAllCommunities();
+      data = data.splice(0, 3);
+      setCommunities(data);
+    };
+
+    const fetchAllProducts = async () => {
+      let data = await getAllProjects();
+      data = data?.splice(0, 4).map((datum) => datum);
+      setProjects(data);
+    };
+
+    fetchCommunities();
+    fetchAllProducts();
+  }, []);
+
+
+
   return (
     <div
       className={`z-[9999] absolute top-0 left-0 w-screen md:pb-0 pb-4 md:h-[100vh] overflow-x-hidden bg-white transform ${
@@ -19,43 +43,61 @@ function MobileView({ open, setOpen }) {
               <div className="flex flex-col md:flex-row justify-between">
                 <div>
                   <Link href="/" className="mobile-headings">
-                    <span><i class="ri-community-line"></i></span>
+                    <span>
+                      <i class="ri-community-line"></i>
+                    </span>
                     <span>communities</span>
                   </Link>
                   <ul className="mobile-list flex flex-col gap-2">
-                    <li>
-                      <Link href="/" className="link-item" >Damic Lagoon</Link>
-                    </li>
-                    <li>
-                      <Link href="/" className="link-item">Damic Hills</Link>
-                    </li>
-                    <li>
-                      <Link href="/" className="link-item">Damic Hills 2</Link>
-                    </li>
+                    {communities?.map((community) => (
+                      <li key={community?._id}>
+                        <Link href="/" className="link-item">
+                          {community?.name}
+                        </Link>
+                      </li>
+                    ))}
+
+                    
                   </ul>
                 </div>
                 <div className="mr-16">
                   <Link href="/" className="mobile-headings">
-                    <span><i class="ri-question-line"></i></span>
+                    <span>
+                      <i class="ri-question-line"></i>
+                    </span>
                     <span>Why Damic?</span>
                   </Link>
                   <ul className="mobile-list flex flex-col gap-2">
                     <li>
-                      <Link href="/about" onClick={() => {
-              setOpen(!open);
-            }} className="link-item">About Damic</Link>
+                      <Link
+                        href="/about"
+                        onClick={() => {
+                          setOpen(!open);
+                        }}
+                        className="link-item"
+                      >
+                        About Damic
+                      </Link>
                     </li>
                     <li>
-                      <Link href="/" className="link-item">Founder's Message</Link>
+                      <Link href="/founder" className="link-item">
+                        Founder's Message
+                      </Link>
                     </li>
                     <li>
-                      <Link href="/" className="link-item">Investor relations</Link>
+                      <Link href="/" className="link-item">
+                        Investor relations
+                      </Link>
                     </li>
                     <li>
-                      <Link href="/" className="link-item">Csr</Link>
+                      <Link href="/" className="link-item">
+                        Csr
+                      </Link>
                     </li>
                     <li>
-                      <Link href="/" className="link-item">hotels & resorts</Link>
+                      <Link href="/" className="link-item">
+                        hotels & resorts
+                      </Link>
                     </li>
                   </ul>
                 </div>
@@ -64,25 +106,35 @@ function MobileView({ open, setOpen }) {
                 <div className="flex flex-col md:flex-row justify-between w-full pr-16">
                   <div>
                     <Link href="/" className="mobile-headings">
-                      <span><i class="ri-building-2-line"></i></span>
+                      <span>
+                        <i class="ri-building-2-line"></i>
+                      </span>
                       <span>projects</span>
                     </Link>
                     <ul className="mobile-list flex gap-2 flex-col">
                       <li>
-                        <Link href="/" className="link-item">all projects</Link>
+                        <Link href="/projects" className="link-item">
+                          all projects
+                        </Link>
                       </li>
                       <li>
-                        <Link href="/" className="link-item">find properties</Link>
+                        <Link href="/projects" className="link-item">
+                          find properties
+                        </Link>
                       </li>
                     </ul>
                   </div>
                   <div className="flex flex-col justify-start items-start mt-5 mr-16">
                     <Link href="/" className="mobile-headings">
-                      <span><i class="ri-price-tag-3-line"></i></span>
+                      <span>
+                        <i class="ri-price-tag-3-line"></i>
+                      </span>
                       <span>offers</span>
                     </Link>
-                    <Link href="/" className="mobile-headings" >
-                      <span><i class="ri-camera-lens-line"></i></span>
+                    <Link href="/" className="mobile-headings">
+                      <span>
+                        <i class="ri-camera-lens-line"></i>
+                      </span>
                       <span>3d tour</span>
                     </Link>
                   </div>
@@ -92,7 +144,7 @@ function MobileView({ open, setOpen }) {
               <div className="flex flex-col md:flex-row mt-5  md:items-center gap-3 md:gap-6 w-full justify-center">
                 <div>
                   <h1 className="uppercase md:text-3xl font-bold">
-                     <span className="">Making</span> things happen
+                    <span className="">Making</span> things happen
                   </h1>
                   <p className="font-semibold md:text-xl text-[#A18830]">
                     The next big idea might be yours.
@@ -111,17 +163,22 @@ function MobileView({ open, setOpen }) {
                 width={1000}
                 height={1000}
                 className="w-full h-[70vh]"
+                alt=""
               />
-        
-            </div>      
+            </div>
             <div className="absolute top-0 left-0 md:flex hidden items-center justify-center h-full w-full">
-                <div className="glass-bg text-white w-3/4 flex flex-col gap-3 py-10 px-7">
-                  <h1 className="font-bold text-xl">THE PREMIER LUXURY PROPERTY DEVELOPER IN DUBAI</h1>
-                  <p className="text-sm font-semibold">
-                  DAMAC Properties has been shaping the Middle East’s luxury real estate market since 2002, delivering iconic residential, commercial and leisure properties for sale in Dubai, across the region and beyond.
-                  </p>
-                </div>
+              <div className="glass-bg text-white w-3/4 flex flex-col gap-3 py-10 px-7">
+                <h1 className="font-bold text-xl">
+                  THE PREMIER LUXURY PROPERTY DEVELOPER IN DUBAI
+                </h1>
+                <p className="text-sm font-semibold">
+                  DAMAC Properties has been shaping the Middle East’s luxury
+                  real estate market since 2002, delivering iconic residential,
+                  commercial and leisure properties for sale in Dubai, across
+                  the region and beyond.
+                </p>
               </div>
+            </div>
           </div>
         </div>
       </div>

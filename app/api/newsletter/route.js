@@ -6,13 +6,14 @@ import { NextResponse } from "next/server";
 export const POST = async (res) => {
   const { email } = await res.json();
 
-  console.log("Email received", email);
-
   const emailQuery = `*[_type == 'newsletter' && email == '${email}']`;
   const emailExists = await sanityClient.fetch(emailQuery);
 
   if (emailExists.length !== 0) {
-    return NextResponse.json({ message: "Thank you for submitting." });
+    return NextResponse.json({
+      message: "Thank you for submitting.",
+      status: 200,
+    });
   }
 
   const doc = {
@@ -28,12 +29,12 @@ export const POST = async (res) => {
 
   if (_id) {
     return NextResponse.json(
-      { message: "Newsletter Application successful." },
+      { message: "Newsletter Application successful.", status: 200 },
       { status: 200 }
     );
   } else {
     return NextResponse.json(
-      { message: "Newasletter was not successful. Try again." },
+      { message: "Newasletter was not successful. Try again.", status: 400 },
       { status: 400 }
     );
   }

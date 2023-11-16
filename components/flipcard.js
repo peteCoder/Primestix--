@@ -1,7 +1,10 @@
 import Image from "next/image";
 import React from "react";
 
-const Flipcard = ({data}) => {
+const Flipcard = ({ data }) => {
+  
+
+  // console.log(data)
 
   let formattedData = data;
   

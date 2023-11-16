@@ -1,9 +1,51 @@
-"use client"
-import React from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
+"use client";
+import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { getAllCommunities } from "@/actions/getAllCommunities";
+import { getAllProjects } from "@/actions/getAllProjects";
 
+import toast from "react-hot-toast";
 const Footer = () => {
+  const [email, setEmail] = useState("");
+
+  const [communities, setCommunities] = useState([]);
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchCommunities = async () => {
+      let data = await getAllCommunities();
+      data = data.splice(0, 3);
+      setCommunities(data);
+    };
+
+    const fetchAllProducts = async () => {
+      let data = await getAllProjects();
+      data = data?.splice(0, 4).map((datum) => datum);
+      setProjects(data);
+    };
+
+    fetchCommunities();
+    fetchAllProducts();
+  }, []);
+
+  const handleSendNewsletter = async (e) => {
+    e.preventDefault();
+    const response = await fetch(`/api/newsletter`, {
+      method: "POST",
+      body: JSON.stringify({ email }),
+      "Content-Type": "application/json",
+    });
+
+    const data = await response.json();
+    console.log(data);
+    if (data?.status === 200) {
+      toast.success(data?.message);
+    } else {
+      toast.error(data?.message);
+    }
+  };
+
   return (
     <div className="bg-footer text-gray-300 pb-20">
       <div className="font-raleway max-w-[1100px] mx-auto w-full flex flex-col justify-center items-center">
@@ -13,15 +55,23 @@ const Footer = () => {
               <div className="col-span-12">
                 <div className="flex flex-col items-start mt-10 -ml-[50px]">
                   {/* logo */}
-                  <Link href="/" className="uppercase flex items-center font-[500]">
+                  <Link
+                    href="/"
+                    className="uppercase flex items-center font-[500]"
+                  >
                     <Image
                       src="/PRIMESTIX_ICON.png"
                       width={200}
                       height={100}
                       alt="logo"
-                    />     <h1 className='heading -ml-[3rem] leading-6'>Primestix <br/><span className='-mt-5 text-sm capitalize'>Where we give best.</span></h1>
+                    />{" "}
+                    <h1 className="heading -ml-[3rem] leading-6">
+                      Primestix <br />
+                      <span className="-mt-5 text-sm capitalize">
+                        Where we give best.
+                      </span>
+                    </h1>
                   </Link>
-             
 
                   {/* <div className="flex gap-2 ml-5 mt-4 font-semibold">
                     <span>
@@ -56,32 +106,36 @@ const Footer = () => {
               </div>
               <div className="col-span-12 md:col-span-4 flex flex-col gap-2">
                 <h1 className="heading">Why PRIMSTIX?</h1>
-                <Link href="./">About Primestix</Link>
-                <Link href="./">Founder's Message</Link>
+                <Link href="/about">About Primestix</Link>
+                <Link href="/founder">Founder's Message</Link>
                 <Link href="./">Careers</Link>
                 <Link href="./">Investor relations</Link>
                 <Link href="./">Whistleblower line</Link>
               </div>
-              <div className="col-span-12 md:col-span-4 flex flex-col gap-2">
+              {/* <div className="col-span-12 md:col-span-4 flex flex-col gap-2">
                 <h1 className="heading">Hospitality</h1>
                 <Link href="./">Paramount Hotel Dubai</Link>
                 <Link href="./">Paramount Hotel Midtown</Link>
                 <Link href="./">DAMAC Maison Distinction</Link>
                 <Link href="./">DAMAC Maison Cour Jardin</Link>
-              </div>
+              </div> */}
             </div>
             <div className="grid grid-cols-12 my-10">
               <div className="col-span-12 md:col-span-4 flex flex-col gap-2">
                 <h1 className="heading">Communities</h1>
-                <Link href="./">Primestix Lagoons</Link>
-                <Link href="./">Primestix Hills</Link>
-                <Link href="./">Primestix Hills</Link>
+                {communities?.map((community) => (
+                  <Link key={community?._id} href="/projects">
+                    {community?.name}
+                  </Link>
+                ))}
               </div>
               <div className="col-span-12 md:col-span-4 flex flex-col gap-2">
                 <h1 className="heading">Latest Launch</h1>
-                <Link href="./">Primestix Case</Link>
-                <Link href="./">Volto</Link>
-                <Link href="./">Turkey</Link>
+                {projects?.map((project) => (
+                  <Link key={project._id} href={`/projects/${project._id}`}>
+                    {project?.name}
+                  </Link>
+                ))}
               </div>
             </div>
           </div>
@@ -97,8 +151,13 @@ const Footer = () => {
                   type="text"
                   className="px-4 py-2 text-black"
                   placeholder="Enter mail..."
+                  onChange={(e) => setEmail(e.target.value)}
                 />
-                <button class="flex items-center justify-center px-4 border-l">
+                <button
+                  onClick={handleSendNewsletter}
+                  class="flex items-center justify-center px-4 border-l"
+                  disabled={email === "" || email.length === 0}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -117,11 +176,11 @@ const Footer = () => {
               </div>
             </div>
 
-            <div className='md:text-4xl text-xl my-4 flex gap-4'>
-            <i class="ri-facebook-box-line"></i>
-            <i class="ri-twitter-x-line"></i>
-            <i class="ri-linkedin-box-fill"></i>
-            <i class="ri-youtube-fill"></i>
+            <div className="md:text-4xl text-xl my-4 flex gap-4">
+              <i class="ri-facebook-box-line"></i>
+              <i class="ri-twitter-x-line"></i>
+              <i class="ri-linkedin-box-fill"></i>
+              <i class="ri-youtube-fill"></i>
             </div>
           </div>
         </div>
@@ -138,6 +197,6 @@ const Footer = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Footer
+export default Footer;
