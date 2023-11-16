@@ -21,7 +21,7 @@ const News = () => {
                 <h1 className='primary-heading' style={{color: "white"}}>News</h1>
             </div>
 
-            <span className="capitalize flex items-center justify-center text-white my-5 font-semibold text-center text-xl font-raleway px-32">
+            <span className="capitalize flex items-center justify-center text-white my-5 font-semibold text-center text-xl font-raleway md:px-32 px-5">
         Lorem ipsum dolor sit amet,  laboris nisi ut aliquip <br/>ex ea commodo consequat.
         </span>
       <Swiper

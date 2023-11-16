@@ -3,7 +3,7 @@ import ProjectListClient from "@/components/ProjectListClient";
 
 const ProjectPage = () => {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen mt-20">
       <div className="caption-section text-white">
         <div className="max-w-[768px] lg:max-w-[1170px] mx-auto px-[15px] ">
           <h1 className="text-[53px] font-bold tracking-[2.06px] pt-[20px]">

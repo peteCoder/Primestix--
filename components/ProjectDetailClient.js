@@ -141,7 +141,7 @@ const ProjectDetailClient = () => {
   }, [projectId]);
 
   return (
-    <main className="h-full">
+    <main className="h-full mt-20">
       {isLoading ? (
         <div className="w-full h-screen flex justify-center items-center">
           <BeatLoader color="#e8d5a1b8" />

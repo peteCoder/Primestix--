@@ -7,7 +7,6 @@ import Link from "next/link";
 // import "../styles/styles.css";
 
 const OurTeam = () => {
-  const [ isRevealed, setIsRevealed] = useState(false)
   return (
     <div className="h-auto md:py-10 md:pt-20 bg-[#AD8F31]">
       <div className="grid grid-cols-12">
@@ -24,22 +23,14 @@ const OurTeam = () => {
             </div>
           </div>
         </div>
-        <div className="md:col-span-12 col-span-12 flex gap-3 justify-center items-center mt-10">
+        <div className="md:col-span-12 col-span-12 flex flex-col gap-3 justify-center items-center mt-10">
           <Flipcard />
-        </div>
-
-        {isRevealed ? (
-          <div className="md:col-span-12 col-span-12 flex gap-3 justify-center items-center mt-10">
-            <Flipcard />
+          <div className="w-full flex justify-center items-center mb-10">
+          <Link href="/team" className="py-3 font-raleway font-semibold rounded-[50px] px-5 text-xl bg-white flex items-center justify-center">
+            See All.
+          </Link>
           </div>
-        ) : (
-           <button
-            className="md:col-span-12 col-span-12  flex items-center justify-center mx-auto py-4 px-8 shadow-xl rounded-full text-xl font-raleway my-5 bg-white hover:text-red-500"
-            onClick={() => setIsRevealed((prev) => !prev)}
-          >
-            See More Members 
-          </button>
-        )}
+        </div>
         </div>
     </div>
   );

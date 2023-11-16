@@ -51,12 +51,12 @@ const Filter = () => {
   return (
     <div>
       {/* Filtering components */}
-      <div className="px-[20px] w-full -top-[37px] relative">
+      <div className="px-[20px] w-full -top-[37px] relative font-raleway">
         <div className="text-white filter-container max-w-[970px] lg:max-w-[1170px] mx-auto">
           <div>
             <div className="max-w-[1070px] mx-auto py-[10px] flex md:items-center flex-col md:flex-row">
               {/* Search bar */}
-              <div className="bg-[#e8d5a1b8] rounded-[2px] min-h-[35px] max-w-[863px] flex items-center flex-1">
+              <div className="bg-[#A18830] rounded-[2px] min-h-[35px] max-w-[863px] flex items-center flex-1">
                 <div className="flex items-center justify-center w-full">
                   {/* Search Icon */}
                   <svg
@@ -97,7 +97,7 @@ const Filter = () => {
               </button>
             </div>
 
-            <div className="max-w-[1070px] mx-auto py-[10px] max-h-[400px] flex md:flex-row flex-col gap-3">
+            <div className="max-w-[1070px] mx-auto py-[10px] max-h-[400px] flex md:flex-row flex-col font-raleway gap-3">
               {/* All of these select options are hardcoded but provisions are made for them in the sanity schema / db */}
               <select className="all-select" onChange={handleProjectType}>
                 <option value={""}>Project Type</option>
@@ -136,7 +136,7 @@ const Filter = () => {
             </div>
             <div className="cursor-pointer" onClick={() => setCollapsedSelectOptions(prev => !prev)}>
               {/* Collapse filter select components */}
-              Here we collapse
+             
             </div>
           </div>
 
@@ -163,7 +163,7 @@ const Filter = () => {
               onChange={(e) =>
                 filter.addOrderOfItems({ orderOfItems: e.target.value })
               }
-              className="w-[150px] outline-none py-1 px-2 text-sm"
+              className="w-[150px] font-raleway outline-none py-1 px-2 text-sm"
             >
               <option value={"createdAt asc"}>Latest Project</option>
               <option value={"price asc"}>Price Lowest</option>
