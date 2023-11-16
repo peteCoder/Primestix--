@@ -141,7 +141,17 @@ function MobileView({ open, setOpen }) {
                 </div>
               </div>
 
-              <div className="flex flex-col md:flex-row mt-5  md:items-center gap-3 md:gap-6 w-full justify-center">
+              <div className="md:hidden flex my-5">
+              <button className="flex items-center openModalBtn text-2xl" onClick={() => {
+                  setOpenModal(true)
+                }}>
+                  <i class="ri-calendar-2-line"></i>
+                  &nbsp;
+                  <span className="uppercase font-[500]">schedule a call</span>
+                </button>
+              </div>
+
+              <div className="hidden md:flex flex-col md:flex-row mt-5  md:items-center gap-3 md:gap-6 w-full justify-center">
                 <div>
                   <h1 className="uppercase md:text-3xl font-bold">
                     <span className="">Making</span> things happen
