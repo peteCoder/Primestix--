@@ -4,7 +4,7 @@ export const getTeam = async () => {
   const query = `*[_type == 'team']{
         name,
         bio,
-        postion,
+        position,
         coverImage{
             asset->{
                 url

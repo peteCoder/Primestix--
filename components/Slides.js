@@ -6,6 +6,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import "../styles/main.scss";
 
+import { formatLocation } from "@/lib/helpers";
+
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -117,13 +119,17 @@ export default function Slider() {
                             </svg>
                           </span>
                           <span>
-                            {feature?.city}, {feature?.country}
+                            {/* Add format location function here */}
+                            {formatLocation(
+                              feature?.city?.name,
+                              feature?.country?.name
+                            )}
                           </span>
                         </span>
                       </div>
                       <div>
                         <Link
-                          href="/page"
+                          href="/projects"
                           className="w-full flex items-center md:justify-start justify-center gap-3 my-2 hover:gap-6 font-bold font-raleway transition-all duration-300 text-sm text-white"
                         >
                           <span className="capitalize">Learn more</span>
@@ -150,15 +156,17 @@ export default function Slider() {
                 </div>
               </SwiperSlide>
             ))}
-            <div className="autoplay-progress" slot="container-end">
-              <svg viewBox="0 0 48 48" ref={progressCircle}>
-                <circle cx="24" cy="24" r="20"></circle>
-              </svg>
-              <span ref={progressContent}></span>
-            </div>
+        
+              <div className="autoplay-progress" slot="container-end">
+                <svg viewBox="0 0 48 48" ref={progressCircle}>
+                  <circle cx="24" cy="24" r="20"></circle>
+                </svg>
+                <span ref={progressContent}></span>
+              </div>
+            
           </Swiper>
 
-          <Recents />
+          <Recents data={features[0]} />
         </div>
       )}
     </>

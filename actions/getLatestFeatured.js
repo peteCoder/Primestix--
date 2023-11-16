@@ -4,14 +4,41 @@ export const getLatestFeatured = async () => {
   const query = `*[_type == "featured"]{
         _id,
         name,
-        description, 
+        description,
+        country->{name},
+        city->{name},
         bannerImage{
             asset->{
                 url
             }
         },
+        projects[]->{
+            name,
+            bannerImage{
+            asset->{
+                url
+            }
+        },
+        },
+  }`;
+
+  const featured = await sanityClient.fetch(query);
+  return featured;
+};
+
+/*
+
+{
+        _id,
+        name,
+        description,
         country,
         city,
+        bannerImage{
+            asset->{
+                url
+            }
+        },
         projects[]{
             _id,
             bannerImage{
@@ -21,9 +48,7 @@ export const getLatestFeatured = async () => {
             }
         },
 
-        }
-    }`;
+        
+    }`
 
-  const featured = await sanityClient.fetch(query);
-  return featured;
-};
+*/

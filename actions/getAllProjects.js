@@ -23,7 +23,6 @@ export const getAllProjects = async () => {
         url
       }}},
       createdAt
-
     }`;
 
   const projects = await sanityClient.fetch(query);

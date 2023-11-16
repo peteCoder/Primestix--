@@ -8,23 +8,29 @@ import { getTeam } from "@/actions/getTeam";
 // import "../styles/styles.css";
 
 const OurTeam = () => {
-  const [teamMembers, setTeanNenbers] = useState([]);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [secondTeamMembers, setSecondTeamMembers] = useState([]);
   const [isRevealed, setIsRevealed] = useState(false);
 
   useEffect(() => {
     const fetchTeam = async () => {
       let data = await getTeam();
+      const secondData = data?.splice(1, data?.length).map(team => team);
+      console.log(data);
+      setTeamMembers(data);
+      setSecondTeamMembers(secondData);
 
-      setTeanNenbers(data);
     };
 
     fetchTeam();
   }, []);
 
+  console.log(teamMembers.splice(1, teamMembers.length));
+
   return (
     <>
-      {teamMembers.map((myTeam) => (
-        <div key={myTeam.id} className="h-auto md:py-10 md:pt-20 bg-[#AD8F31]">
+      {teamMembers && (
+        <div className="h-auto md:py-10 md:pt-20 bg-[#AD8F31]">
           <div className="grid grid-cols-12">
             <div className="md:col-span-12 col-span-12 flex items-center justify-center px-10 md:px-0">
               <div className="flex flex-col md:w-[400px] items-center justify-center md:h-[200px] bg-white shadow-xl p-5">
@@ -40,12 +46,14 @@ const OurTeam = () => {
               </div>
             </div>
             <div className="md:col-span-12 col-span-12 flex gap-3 justify-center items-center mt-10">
-              <Flipcard />
+              <Flipcard first={true} data={teamMembers[0]} />
             </div>
 
             {isRevealed ? (
               <div className="md:col-span-12 col-span-12 flex gap-3 justify-center items-center mt-10">
-                <Flipcard />
+                {secondTeamMembers?.map((team) => (
+                  <Flipcard first={false} data={team} />
+                ))}
               </div>
             ) : (
               <button
@@ -57,7 +65,7 @@ const OurTeam = () => {
             )}
           </div>
         </div>
-      ))}
+      )}
     </>
   );
 };
