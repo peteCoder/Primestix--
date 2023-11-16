@@ -5,7 +5,7 @@ const Founder = () => {
   return (
   <div>
      <div className='bg-black mt-20'>
-    <div className='flex flex-col font-raleway max-w-[1100px] w-full mx-auto py-20'>
+    <div className='flex flex-col font-raleway max-w-[1100px] w-full mx-auto px-5 md:px-0 py-20'>
         <div className='text-white'>
           <h1 className='text-4xl font-semibold'>About PRIMESTIX</h1>
           <p className='capitalize text-2xl italic'>Founder's message</p>
@@ -13,20 +13,20 @@ const Founder = () => {
       </div>
 
     </div>
-     <div className="flex flex-col font-raleway max-w-[1100px] mt-20 w-full mx-auto py-20 relative">
-      <div className="grid grid-cols-12 gap-7">
-        <div className="col-span-6">
+     <div className="flex flex-col font-raleway max-w-[1100px] md:mt-20 w-full mx-auto md:py-20 relative">
+      <div className="grid grid-cols-12 md:gap-7">
+        <div className="md:col-span-6 col-span-12">
           <Image
-            className="w-[550px] absolute -top-[20%] left-0 h-auto"
+            className="w-[550px] relative md:absolute md:-top-[20%] left-0 h-auto"
             src="/founder.jpg"
             width={500}
             height={500}
           />
         </div>
-        <div className="col-span-6 text-black">
+        <div className="md:col-span-6 col-span-12 text-black">
           <div>
 
-            <p className="mt-10 mb-5 text-xl relative">
+            <p className="mt-10 mb-5 pb-10  px-5 md:px-0 text-xl font-semibold relative">
               DAMAC has become synonymous with iconic projects setting new
               standards for design, craftsmanship and inspired lifestyles
             </p>
@@ -34,7 +34,7 @@ const Founder = () => {
         </div>
       </div>
     </div>
-    <div  className='flex flex-col font-raleway max-w-[1100px] w-full mx-auto py-5 font-[400] text-xl leading-8'><p>
+    <div  className='flex flex-col font-raleway max-w-[1100px] w-full px-5 md:px-0 mx-auto py-5 font-[400] pb-20 text-xl text-md leading-8'><p>
     The DAMAC Properties story runs in tandem with the UAE’s journey to becoming the world’s foremost trade, hospitality and lifestyle destination.
 
 In 2002, Dubai’s leadership opened up the real estate market to international investors by allowing freehold ownership. DAMAC Properties was incorporated the same year, and purchased land for its very first project in the Dubai Marina area.

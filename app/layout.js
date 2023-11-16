@@ -1,6 +1,7 @@
 import FullScreenNavbar from "@/components/FullScreenNavbar";
 import "./globals.css";
 import "remixicon/fonts/remixicon.css";
+import Navigation from "@/components/Navigation";
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 
@@ -28,12 +29,24 @@ export default function RootLayout({ children }) {
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
         />
+        <script
+          type="module"
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+        ></script>
+        <script
+          nomodule
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+        ></script>
       </head>
       <body className="overflow-x-hidden">
         <div className="fixed top-0 w-full bg-white z-[9999] shadow-lg">
           <FullScreenNavbar />
         </div>
-        <div className="pt-[82px]">{children}</div>
+        {children}
+        <div>
+          <Navigation />
+        </div>
+        
       </body>
     </html>
   );

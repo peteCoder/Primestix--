@@ -144,4 +144,3 @@ const Flipcard = ({data}) => {
 
 export default Flipcard;
 
-
