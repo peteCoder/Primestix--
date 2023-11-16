@@ -29,7 +29,7 @@ export const POST = async (res) => {
 
   if (_id) {
     return NextResponse.json(
-      { message: "Newsletter Application successful.", status: 200 },
+      { message: "Newsletter Application was successful.", status: 200 },
       { status: 200 }
     );
   } else {

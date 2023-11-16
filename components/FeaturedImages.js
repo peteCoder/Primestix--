@@ -67,7 +67,7 @@ const FeaturedImages = () => {
                       <div className="divider w-full bg-[#AD8F31] h-[1px]"></div>
                       <div className="w-full font-raleway px-5">
                         <Link
-                          href="/page"
+                          href={`/community/${community?._id}`}
                           className="w-full flex items-center justify-between py-3"
                         >
                           <span className="uppercase">Learn more</span>
