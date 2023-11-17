@@ -17,6 +17,8 @@ const OurTeam = () => {
       let data = await getTeam();
       const secondData = data?.splice(1, data?.length).map(team => team);
       // console.log(data);
+      // console.log(secondData);
+
       setTeamMembers(data);
       setSecondTeamMembers(secondData);
 

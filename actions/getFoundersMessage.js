@@ -5,6 +5,7 @@ export const getFoundersMessage = async () => {
         name,
         message,
         description,
+        short_description,
         numberOfHomesDelivered,
         timeOfDelivery,
         numberOfHomesInPlanning,

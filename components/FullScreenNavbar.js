@@ -8,7 +8,6 @@ import { getAllProjects } from "@/actions/getAllProjects";
 
 // mobile view
 function MobileView({ open, setOpen }) {
-
   const [communities, setCommunities] = useState([]);
   const [projects, setProjects] = useState([]);
   useEffect(() => {
@@ -27,8 +26,6 @@ function MobileView({ open, setOpen }) {
     fetchCommunities();
     fetchAllProducts();
   }, []);
-
-
 
   return (
     <div
@@ -51,13 +48,17 @@ function MobileView({ open, setOpen }) {
                   <ul className="mobile-list flex flex-col gap-2">
                     {communities?.map((community) => (
                       <li key={community?._id}>
-                        <Link href="/" className="link-item">
+                        <Link
+                          onClick={() => {
+                            setOpen(!open);
+                          }}
+                          href={`/community/${community?._id}`}
+                          className="link-item"
+                        >
                           {community?.name}
                         </Link>
                       </li>
                     ))}
-
-                    
                   </ul>
                 </div>
                 <div className="mr-16">
@@ -80,22 +81,46 @@ function MobileView({ open, setOpen }) {
                       </Link>
                     </li>
                     <li>
-                      <Link href="/founder" className="link-item">
+                      <Link
+                        onClick={() => {
+                          setOpen(!open);
+                        }}
+                        href="/founder"
+                        className="link-item"
+                      >
                         Founder's Message
                       </Link>
                     </li>
                     <li>
-                      <Link href="/" className="link-item">
+                      <Link
+                        onClick={() => {
+                          setOpen(!open);
+                        }}
+                        href="/"
+                        className="link-item"
+                      >
                         Investor relations
                       </Link>
                     </li>
                     <li>
-                      <Link href="/" className="link-item">
+                      <Link
+                        onClick={() => {
+                          setOpen(!open);
+                        }}
+                        href="/"
+                        className="link-item"
+                      >
                         Csr
                       </Link>
                     </li>
                     <li>
-                      <Link href="/" className="link-item">
+                      <Link
+                        onClick={() => {
+                          setOpen(!open);
+                        }}
+                        href="/"
+                        className="link-item"
+                      >
                         hotels & resorts
                       </Link>
                     </li>
@@ -105,7 +130,13 @@ function MobileView({ open, setOpen }) {
               <div>
                 <div className="flex flex-col md:flex-row justify-between w-full pr-16">
                   <div>
-                    <Link href="/" className="mobile-headings">
+                    <Link
+                      onClick={() => {
+                        setOpen(!open);
+                      }}
+                      href="/"
+                      className="mobile-headings"
+                    >
                       <span>
                         <i class="ri-building-2-line"></i>
                       </span>
@@ -113,25 +144,49 @@ function MobileView({ open, setOpen }) {
                     </Link>
                     <ul className="mobile-list flex gap-2 flex-col">
                       <li>
-                        <Link href="/projects" className="link-item">
+                        <Link
+                          onClick={() => {
+                            setOpen(!open);
+                          }}
+                          href="/projects"
+                          className="link-item"
+                        >
                           all projects
                         </Link>
                       </li>
                       <li>
-                        <Link href="/projects" className="link-item">
+                        <Link
+                          onClick={() => {
+                            setOpen(!open);
+                          }}
+                          href="/projects"
+                          className="link-item"
+                        >
                           find properties
                         </Link>
                       </li>
                     </ul>
                   </div>
                   <div className="flex flex-col justify-start items-start mt-5 mr-16">
-                    <Link href="/" className="mobile-headings">
+                    <Link
+                      onClick={() => {
+                        setOpen(!open);
+                      }}
+                      href="/"
+                      className="mobile-headings"
+                    >
                       <span>
                         <i class="ri-price-tag-3-line"></i>
                       </span>
                       <span>offers</span>
                     </Link>
-                    <Link href="/" className="mobile-headings">
+                    <Link
+                      onClick={() => {
+                        setOpen(!open);
+                      }}
+                      href="/"
+                      className="mobile-headings"
+                    >
                       <span>
                         <i class="ri-camera-lens-line"></i>
                       </span>
@@ -142,9 +197,12 @@ function MobileView({ open, setOpen }) {
               </div>
 
               <div className="md:hidden flex my-5">
-              <button className="flex items-center openModalBtn text-2xl" onClick={() => {
-                  setOpenModal(true)
-                }}>
+                <button
+                  className="flex items-center openModalBtn text-2xl"
+                  onClick={() => {
+                    setOpenModal(true);
+                  }}
+                >
                   <i class="ri-calendar-2-line"></i>
                   &nbsp;
                   <span className="uppercase font-[500]">schedule a call</span>
@@ -197,9 +255,9 @@ function MobileView({ open, setOpen }) {
 }
 
 const FullScreenNavbar = () => {
-  const [openModal, setOpenModal] = useState(false)
+  const [openModal, setOpenModal] = useState(false);
   const [open, setOpen] = useState(false);
-  const [ isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <div>
       <MobileView open={open} setOpen={setOpen} />
@@ -228,11 +286,16 @@ const FullScreenNavbar = () => {
             />
           </div>
           <Link href="/" className="uppercase font-[500]">
-            <Image src="/horizontal-logo.png" width={100} height={50}  alt="logo"/>
+            <Image
+              src="/horizontal-logo.png"
+              width={100}
+              height={50}
+              alt="logo"
+            />
           </Link>
         </div>
 
-        <div className="relative">
+        <Link href={`/projects`} className="relative block">
           <div class="border rounded overflow-hidden hidden md:flex">
             <input type="text" className="px-4 py-2" placeholder="Search..." />
             <button class="flex items-center justify-center px-4 border-l">
@@ -246,15 +309,18 @@ const FullScreenNavbar = () => {
               </svg>
             </button>
           </div>
-        </div>
+        </Link>
 
         <div className="flex">
           <div className="">
             <ul className="flex items-center justify-center gap-4">
               <li className="md:flex items-center justify-center hidden">
-                <button className="flex items-center openModalBtn" onClick={() => {
-                  setOpenModal(true)
-                }}>
+                <button
+                  className="flex items-center openModalBtn"
+                  onClick={() => {
+                    setOpenModal(true);
+                  }}
+                >
                   <i class="ri-calendar-2-line"></i>
                   &nbsp;
                   <span className="uppercase font-[500]">schedule a call</span>
@@ -265,7 +331,7 @@ const FullScreenNavbar = () => {
                 <span className="divider text-xs">|</span>
               </li>
               <li>
-                <Link href="home" className="md:flex hidden items-center">
+                <Link href="/" className="md:flex hidden items-center">
                   <i class="ri-mail-line"></i>
                   &nbsp;
                   <span className="uppercase font-[500]">Enquire</span>
@@ -278,35 +344,34 @@ const FullScreenNavbar = () => {
 
               <li>
                 <button
-                  className="md:flex hidden items-center hover:text-red-500" onClick={() => setIsOpen((prev) => !prev)}
+                  className="md:flex hidden items-center hover:text-red-500"
+                  onClick={() => setIsOpen((prev) => !prev)}
                 >
                   <span className="">
                     <i class="ri-translate-2"></i>
                   </span>
                   <span className="">
-                  {!isOpen ? (
-                     <i class="ri-arrow-drop-down-fill"></i>
-                ):(
-                    <i class="ri-arrow-drop-up-fill"></i>
-                )}
+                    {!isOpen ? (
+                      <i class="ri-arrow-drop-down-fill"></i>
+                    ) : (
+                      <i class="ri-arrow-drop-up-fill"></i>
+                    )}
                   </span>
                 </button>
 
                 {/* dropdown when the language column is open */}
-                {isOpen && <div className="mt-4 bg-gray-200 absolute font-semibold">
+                {isOpen && (
+                  <div className="mt-4 bg-gray-200 absolute font-semibold">
                     <ul className="flex flex-col">
-                        <li className="py-4 px-5 border-b-2 hover:bg-white transition-all duration-300 ease-in-out border-gray-500">
-                            <button>
-                            English
-                            </button>
-                        </li>
-                        <li  className="py-4 px-5 hover:bg-white transition-all duration-300 ease-in-out ">
-                            <button>
-                            اللغة العربية
-                            </button>
-                        </li>
-                    </ul>    
-                </div>}
+                      <li className="py-4 px-5 border-b-2 hover:bg-white transition-all duration-300 ease-in-out border-gray-500">
+                        <button>English</button>
+                      </li>
+                      <li className="py-4 px-5 hover:bg-white transition-all duration-300 ease-in-out ">
+                        <button>اللغة العربية</button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
               </li>
             </ul>
           </div>
@@ -335,7 +400,7 @@ const FullScreenNavbar = () => {
           </div>
         </div>
       </div>
-      { openModal && <Modal closeModal={setOpenModal}/>}
+      {openModal && <Modal closeModal={setOpenModal} />}
     </div>
   );
 };

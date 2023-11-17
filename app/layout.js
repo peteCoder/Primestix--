@@ -39,14 +39,15 @@ export default function RootLayout({ children }) {
           src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
         ></script>
       </head>
-      <ToastProvider />
-      <body className="overflow-x-hidden">
+
+      <body className="">
         <div className="fixed top-0 w-full bg-white z-[9999] shadow-lg">
           <FullScreenNavbar />
         </div>
+        <ToastProvider />
         {children}
         <div>
-          <Navigation />
+          <Navigation />{" "}
         </div>
       </body>
     </html>

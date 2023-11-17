@@ -7,28 +7,16 @@ export const GET = async (res) => {
 };
 
 export const POST = async (res) => {
-  // ykprzvmzeippmdta
-  const {
-    initials,
-    firstName,
-    lastName,
-    phone,
-    email,
-    newsletterConfirmation, // Boolean
-    message,
-    subject,
-  } = await res.json();
+  const { firstName, lastName, phoneNumber, email, message } = await res.json();
 
   const doc = {
     _type: "customer",
-    initials,
     firstName,
     lastName,
-    phone,
+    phone: phoneNumber,
     email,
-    newsletterConfirmation, // Boolean
     message,
-    subject,
+    // subject,
   };
 
   const response = await sanityClient.create(doc);
@@ -37,19 +25,19 @@ export const POST = async (res) => {
 
   // nodemailer transporter instantiation
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    service: process.env.SMTP_EMAIL_PROVIDER,
     auth: {
-      user: "talk2peteresezobor@gmail.com",
-      pass: "ykprzvmzeippmdta",
+      user: process.env.SMTP_EMAIL_USER,
+      pass: process.env.SMPT_EMAIL_PASSWORD,
     },
   });
 
   // Mail Options
   const mailOptions = {
     from: email,
-    to: "peteresezoborcode@gmail.com",
-    subject: subject,
-    text: message,
+    to: process.env.SMTP_EMAIL_RECEPIENT,
+    subject: `Message from ${firstName} ${lastName}, a customer of Primestix.`,
+    text: `Customer email: ${email}. \n\n Customer message: ${message}`,
   };
 
   if (_id) {
@@ -57,18 +45,31 @@ export const POST = async (res) => {
     transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
         console.log(error);
+        return NextResponse.json(
+          {
+            message: "Message was not submitted successful. Please try again.",
+            status: 400,
+          },
+          { status: 400 }
+        );
       } else {
         console.log("Email sent: " + info.response);
+        return NextResponse.json(
+          { message: "Message was sent successful.", status: 200 },
+          { status: 200 }
+        );
       }
     });
-
     return NextResponse.json(
-      { message: "Message was sent successful." },
+      { message: "Message was sent successful.", status: 200 },
       { status: 200 }
     );
   } else {
     return NextResponse.json(
-      { message: "Message was not submitted successful. Try again." },
+      {
+        message: "Message was not submitted successful. Try again.",
+        status: 400,
+      },
       { status: 400 }
     );
   }

@@ -8,6 +8,13 @@ import Flickity from "react-flickity-component";
 import "./flicky.css";
 import Amenities from "./Amenities";
 import Maps from "./Maps";
+import { useForm } from "react-hook-form";
+
+import axios from "axios";
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import toast from "react-hot-toast";
 
 import useOpenController from "./useOpenController";
 
@@ -59,9 +66,10 @@ const flickityOptions = {
 };
 
 function Carousel({ gallery }) {
+  console.log(gallery);
   return (
     <>
-      {gallery?.length !== 0 && (
+      {gallery?.length > 0 && (
         <Flickity
           className={"carousel"}
           elementType={"div"}
@@ -73,9 +81,9 @@ function Carousel({ gallery }) {
           {gallery?.map((image) => (
             <img
               alt="gallery-image"
-              key={image._id}
+              key={image?._id}
               className="relative w-[600px] px-5 h-auto"
-              src={image.ImageUrl.asset.url}
+              src={image?.imageUrl?.asset?.url}
             />
           ))}
         </Flickity>
@@ -102,7 +110,6 @@ const ProjectDetailClient = () => {
         setProject(data);
       } catch (error) {
         setIsLoading(false);
-        // console.log(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -136,9 +143,12 @@ const ProjectDetailClient = () => {
             <p className="text-xl font-[500]">{project.description}</p>
 
             {/* this button takes them to the form */}
-            <button className="bg-[#A18830] text-white py-3 px-10 my-5 uppercase font-semibold">
+            <a
+              href="#form"
+              className="bg-[#A18830] text-white py-3 px-10 my-5 uppercase font-semibold inline-block"
+            >
               Request a callback
-            </button>
+            </a>
 
             {/* full long description */}
             <p className="my-10 text-md">{project.description}</p>
@@ -154,22 +164,24 @@ const ProjectDetailClient = () => {
             </div>
           </div>
 
-          <div className="max-w-[1100px] mx-auto w-full py-10  px-10 md:px-0">
-            <h1 className="text-5xl font-bold py-5 text-black">Nearby.</h1>
-            <ul className="md:ml-10 ml-3 flex flex-col gap-3">
-              {project?.landmarks?.map((landmark) => (
-                <li key={landmark._id}>
-                  <h1 className="text-3xl font-semibold text-[#A18830]">
-                    {landmark.title}
-                  </h1>
-                  <span>{landmark.description}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {project?.landmark && (
+            <div className="max-w-[1100px] mx-auto w-full py-10  px-10 md:px-0">
+              <h1 className="text-5xl font-bold py-5 text-black">Nearby.</h1>
+              <ul className="md:ml-10 ml-3 flex flex-col gap-3">
+                {project?.landmarks?.map((landmark) => (
+                  <li key={landmark._id}>
+                    <h1 className="text-3xl font-semibold text-[#A18830]">
+                      {landmark.title}
+                    </h1>
+                    <span>{landmark.description}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          <div className="max-w-[1100px] mx-auto w-full py-10 md:px-0 px-10">
-            {project?.community && (
+          {project?.community && (
+            <div className="max-w-[1100px] mx-auto w-full py-10 md:px-0 px-10">
               <>
                 <h1 className="text-5xl font-bold py-5 text-black">
                   The Community.
@@ -178,91 +190,188 @@ const ProjectDetailClient = () => {
                   {project?.community?.description}
                 </p>
               </>
-            )}
-          </div>
+            </div>
+          )}
 
           <div className="max-w-[1100px] mx-auto w-full py-10  px-10 md:px-0">
-            <h1 className="text-5xl font-bold py-5 text-black">
-              Amenities and Advantages.
-            </h1>
-            <p className="font-[500] text-xl">
-              Where leisure and fun come together
-            </p>
+            {project?.amenities && (
+              <>
+                <h1 className="text-5xl font-bold py-5 text-black">
+                  Amenities and Advantages.
+                </h1>
+                <p className="font-[500] text-xl">
+                  Where leisure and fun come together
+                </p>
 
-            <div>
-              <Amenities data={project?.amenities} />
-            </div>
+                <div>
+                  <Amenities data={project?.amenities} />
+                </div>
 
-            {/* <Maps/> */}
-
+                {/* <Maps/> */}
+              </>
+            )}
             {/* accordion */}
-            <MainAccordion data={project?.faqs} />
+            {project?.faqs && <MainAccordion data={project?.faqs} />}
           </div>
-          
 
-          <div>
-            <div className="max-w-[1100px] mx-auto w-full mb-10">
+          <MessageForm />
+        </div>
+      )}
+    </main>
+  );
+};
+
+const MessageForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const schema = yup.object({
+    firstName: yup.string().required("Please enter your first name."),
+    lastName: yup.string().required("Please enter your last name."),
+    email: yup.string().email("Invalid email").required("Email is required."),
+    phoneNumber: yup
+      .string()
+      .matches(/^\d+$/, "Invalid phone number.")
+      .required("Phone number is required."),
+    message: yup.string().required("Please enter your message."),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const customSubmission = async (values) => {
+    // alert(JSON.stringify(values));
+
+    try {
+      setIsLoading(true);
+      const response = await axios.post(`/api/customer`, values);
+
+      const data = response.data;
+      console.log(data);
+      if (data.status === 200) {
+        toast.success(data.message);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      setIsLoading(false);
+
+      toast.error("Someething went wrong. Try again.");
+    } finally {
+      setIsLoading(false);
+      setValue("email", "");
+      setValue("firstName", "");
+      setValue("lastName", "");
+      setValue("message", "");
+      setValue("phoneNumber", "");
+    }
+  };
+
+  const onSubmit = async (values) => {
+    await customSubmission(values);
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} id="form">
+      <div className="max-w-[1100px] mx-auto w-full mb-10">
+        <div className="">
+          <div className="max-w-screen-xl px-8 flex flex-col py-10 mx-auto text-gray-900 rounded-lg">
+            <div className="flex flex-col justify-center items-center px-10">
+              <div>
+                <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
+                  Lets talk about everything!
+                </h2>
+              </div>
+              <div className="mt-8 text-center"></div>
+            </div>
             <div className="">
-        <div className="max-w-screen-xl px-8 flex flex-col py-10 mx-auto text-gray-900 rounded-lg">
-          <div className="flex flex-col justify-center items-center px-10">
-            <div>
-              <h2 className="text-4xl lg:text-5xl font-bold leading-tight">
-                Lets talk about everything!
-              </h2>
-            </div>
-            <div className="mt-8 text-center"></div>
-          </div>
-          <div className="">
-            <div>
-              <span className="uppercase text-sm text-gray-600 font-bold">
-                Full Name
-              </span>
-              <input
-                className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-                type="text"
-                placeholder=""
-              />
-            </div>
-            <div className="mt-8">
-              <span className="uppercase text-sm text-gray-600 font-bold">
-                Email
-              </span>
-              <input
-                className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-                type="text"
-              />
-            </div>
+              <div>
+                <span className="uppercase text-sm text-gray-600 font-bold">
+                  First Name
+                </span>
+                <input
+                  {...register("firstName")}
+                  className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                  type="text"
+                  placeholder=""
+                />
+                <p className="text-red-500 text-sm">
+                  {errors.firstName?.message}
+                </p>
+              </div>
+              <div className="mt-8">
+                <span className="uppercase text-sm text-gray-600 font-bold">
+                  Last Name
+                </span>
+                <input
+                  {...register("lastName")}
+                  className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                  type="text"
+                  placeholder=""
+                />
+                <p className="text-red-500 text-sm">
+                  {errors.lastName?.message}
+                </p>
+              </div>
+              <div className="mt-8">
+                <span className="uppercase text-sm text-gray-600 font-bold">
+                  Email
+                </span>
+                <input
+                  {...register("email")}
+                  className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                  type="text"
+                />
+                <p className="text-red-500 text-sm">{errors.email?.message}</p>
+              </div>
 
-            <div className="mt-8">
-              <span className="uppercase text-sm text-gray-600 font-bold">
-                phone nummber
-              </span>
-              <input
-                className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
-                type="tel"
-              />
-            </div>
+              <div className="mt-8">
+                <span className="uppercase text-sm text-gray-600 font-bold">
+                  phone nummber
+                </span>
+                <input
+                  {...register("phoneNumber")}
+                  className="w-full bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                  type="tel"
+                />
+                <p className="text-red-500 text-sm">
+                  {errors.phoneNumber?.message}
+                </p>
+              </div>
 
-            <div className="mt-8">
-              <span className="uppercase text-sm text-gray-600 font-bold">
-                Message
-              </span>
-              <textarea className="w-full h-24 bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"></textarea>
-            </div>
-            <div className="mt-8">
-              <button className="uppercase text-sm font-bold tracking-wide bg-[#A18830] text-gray-100 p-3 rounded-lg w-full focus:outline-none focus:shadow-outline">
-                Send Message
-              </button>
+              <div className="mt-8">
+                <span className="uppercase text-sm text-gray-600 font-bold">
+                  Message
+                </span>
+                <textarea
+                  {...register("message")}
+                  className="w-full h-24 bg-gray-300 text-gray-900 mt-2 p-3 rounded-lg focus:outline-none focus:shadow-outline"
+                ></textarea>
+                <p className="text-red-500 text-sm">
+                  {errors.message?.message}
+                </p>
+              </div>
+              <div className="mt-8">
+                <button
+                  type="submit"
+                  className="uppercase text-sm font-bold tracking-wide bg-[#A18830] text-gray-100 p-3 rounded-lg w-full focus:outline-none focus:shadow-outline"
+                >
+                  {isLoading ? (
+                    <BeatLoader color="#e8d5a1b8" />
+                  ) : (
+                    <>Send Message</>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </div>
-          </div>
-          </div>
-          
-        </div>
-      )}
-    </main>
+    </form>
   );
 };
 
@@ -273,7 +382,7 @@ const MainAccordion = ({ data }) => {
         <h3 className="text-4xl capitalize font-bold py-10">
           Frequently asked questions
         </h3>
-        <h3 className="text-4xl capitalize font-raleway font-bold py-10">Frequently asked questions</h3>
+
         <div className="main-title-underline"></div>
         {data?.map((section, index) => (
           <Accordion key={index} section={section} />

@@ -4,25 +4,30 @@ export const getAllCommunityProjects = async (communityId) => {
   const query = `*[_type == 'project' && community->_id == '${communityId}']{
       _id,
       name,
+      city->{name},
       price,
       description,
-      bannerImage{
+      bannerImage {
         asset->{
-            url
+          url
         }
       },
       location,
       projectType,
-      country,
+      country->{name},
       long,
       lat,
-      faqs[],
+      faqs[]{question, answer},
       landmarks[]{title, description},
       amenities[]{description},
-      gallery[]{ImageUrl {asset->{
-        url
-      }}},
-      createdAt
+      gallery[]->{
+        imageUrl{
+          asset->{
+            url
+          }
+        }
+      },
+      _createdAt
 
     }`;
 

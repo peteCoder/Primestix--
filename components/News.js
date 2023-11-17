@@ -21,6 +21,7 @@ const News = () => {
   useEffect(() => {
     const fetchNews = async () => {
       const data = await getAllNews();
+      console.log(data);
       setNews(data);
     };
 
@@ -72,18 +73,16 @@ const News = () => {
           >
             {news.map((n) => (
               <SwiperSlide
-                key={n._id}
+                key={n?._id}
                 className="news-slider__wrp swiper-wrapper"
               >
                 <div className="news-slider__item swiper-slide">
                   <a href="#" className="news__item">
-                    <div className="news-date">
-                      <span className="news-date__title">24</span>
-                      <span className="news-date__txt">May</span>
-                    </div>
+                    {/* Here */}
+                    <FormattedDate createdAt={n?._createdAt} />
                     <div className="news__title">{n?.title}</div>
 
-                    <p className="news__txt">{n.body}</p>
+                    <p className="news__txt">{n?.body}</p>
 
                     <div className="news__img object-cover">
                       <Image
@@ -101,6 +100,22 @@ const News = () => {
           </Swiper>
         </>
       )}
+    </div>
+  );
+};
+
+const FormattedDate = ({ createdAt }) => {
+  
+  const date = new Date(createdAt);
+  const dateString = date.toString();
+  const dateArray = dateString.split(" ");
+  const day = dateArray[2];
+  const month = dateArray[1];
+
+  return (
+    <div className="news-date">
+      <span className="news-date__title">{day}</span>
+      <span className="news-date__txt">{month}</span>
     </div>
   );
 };

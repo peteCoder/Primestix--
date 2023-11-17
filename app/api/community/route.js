@@ -41,6 +41,11 @@ export async function GET(req) {
       city->{name},
       price,
       description,
+      bannerImage {
+        asset->{
+          url
+        }
+      },
       location,
       projectType,
       country->{name},
@@ -49,9 +54,13 @@ export async function GET(req) {
       faqs[]{question, answer},
       landmarks[]{title, description},
       amenities[]{description},
-      gallery[]{ImageUrl {asset->{
-        url
-      }}},
+      gallery[]->{
+        imageUrl{
+          asset->{
+            url
+          }
+        }
+      },
       createdAt
     }`;
 

@@ -7,7 +7,10 @@ import React from "react";
 import { urlFor } from "@/lib/sanityClient";
 
 const Project = ({ data }) => {
-  // console.log(data);
+  console.log(data);
+
+
+  console.log(data?.gallery[0]?.imageUrl?.asset?.url);
 
   return (
     <Link href={`/projects/${data?._id}`}>
@@ -18,7 +21,8 @@ const Project = ({ data }) => {
             // urlFor(data?.gallery[0].ImageUrl).url()
             // data?.gallery[0]?.ImageUrl?.asset?.url
 
-            backgroundImage: `url(${urlFor(data?.gallery[0]?.ImageUrl).url()})`,
+            // backgroundImage: data?.gallery?.length > 0 ? `url(${urlFor(data?.gallery[0]?.ImageUrl)?.url()})` : ``,
+            backgroundImage: `url(${data?.gallery[0]?.imageUrl?.asset?.url})`,
             backgroundPosition: "50% center",
           }}
           className="h-[305px] bg-no-repeat bg-cover w-full"

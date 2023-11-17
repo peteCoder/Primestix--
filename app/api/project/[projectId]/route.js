@@ -32,8 +32,8 @@ export async function GET(req, { params: { projectId } }) {
   amenities[] {
     description
   },
-  gallery[] {
-    ImageUrl {
+  gallery[]->{
+    imageUrl{
       asset-> {
         url
       }
